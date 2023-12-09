@@ -42,7 +42,7 @@ const Main = ({ urlList }) => {
 	return (
 		<div className="h-screen w-full">
 			<Head>
-				<title>Shrinkr</title>
+				<title>Shrinkr.</title>
 			</Head>
 			<Image
 				className="z-0"
@@ -58,12 +58,12 @@ const Main = ({ urlList }) => {
 				<div className="w-full flex justify-center">
 					<TypeAnimation
 						sequence={[
-							"Url Shrinker",
+							"URL Shrinker",
 							1000,
 							"Shrinkr",
 							1000,
 							"Shrnkr",
-							1000,
+							10000,
 						]}
 						speed={50}
 						repeat={Infinity}
@@ -80,37 +80,38 @@ const Main = ({ urlList }) => {
 						onChange={(e) => setNewUrl(e.target.value)}
 					/>
 					<button type="submit" className="animate-pulse bg-gray-200 px-6 py-3 rounded-r-full font-semibold text-gray-700 mr-2">
-						Shrink Url
+						Shrink URL
 					</button>
 				</form>
 
 				<div className="flex justify-center w-full sm:p-4">
-					<div className='grid grid-cols-5 bg-[#2e2e36] text-gray-50 rounded-md py-4 w-full border-2 border-gray-400'>
-						<div className='grid grid-cols-5 col-span-5 border-b-2 mb-2 border-gray-600'>
+					<div className='grid grid-cols-5 bg-transparent backdrop-blur-sm text-gray-50 rounded-md py-4 w-full border-2 border-gray-400'>
+						<div className='grid grid-cols-5 col-span-5 border-b-2 mb-2 border-gray-400'>
 							<div className='col-span-3 pb-4 px-2 text-gray-300'>Long URL</div>
 							<div className='pb-4 text-gray-300'>Short URL</div>
 							<div className='pb-4 text-gray-300'>Clicked</div>
 						</div>
-						{data.map((urlObject) => (
-							<React.Fragment key={urlObject.code}>
-								<div className='col-span-5 grid grid-cols-5 mb-2'>
-									<div className='col-span-3 px-2 truncate'>
-										<a href={urlObject.url}>
-											{urlObject.url.slice(0, 120)}
-											{urlObject.url.length > 120 ? "..." : ""}
-										</a>
+						<div className='col-span-5 max-h-[calc(100vh-28rem)] py-0 my-0 overflow-y-auto'>
+							{data.map((urlObject) => (
+								<React.Fragment key={urlObject.code}>
+									<div className='col-span-5 grid grid-cols-5 mb-2'>
+										<div className='col-span-3 px-2 truncate'>
+											<a href={urlObject.url}>
+												{urlObject.url.slice(0, 120)}
+												{urlObject.url.length > 120 ? "..." : ""}
+											</a>
+										</div>
+										<div>
+											<a target="_blank" href={`/api/${urlObject.code}`}>
+												{urlObject.code}
+											</a>
+											<CopyUrl urlObject={urlObject} />
+										</div>
+										<div>{urlObject.clicked}</div>
 									</div>
-									<div>
-										<a target="_blank" href={`/api/${urlObject.code}`}>
-											{urlObject.code}
-										</a>
-										<CopyUrl urlObject={urlObject} />
-									</div>
-									<div>{urlObject.clicked}</div>
-								</div>
-
-							</React.Fragment>
-						))}
+								</React.Fragment>
+							))}
+						</div>
 					</div>
 				</div>
 			</main>
