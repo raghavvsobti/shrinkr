@@ -13,7 +13,7 @@ const CopyUrl = ({ urlObject }) => {
 
 	return (
 		<section
-			style={{ cursor: 'pointer', color: "aqua" }}
+			className='cursor-pointer text-lime-400 transition-all ease-in duration-200'
 			onClick={() => {
 				navigator.clipboard.writeText(process.env.BASE_URL + `${urlObject.code}`);
 				setIsCopied(true);
