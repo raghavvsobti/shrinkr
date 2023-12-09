@@ -83,7 +83,7 @@ const Main = ({ urlList }) => {
 					</button>
 				</form>
 
-				<div className="flex justify-center w-full sm:p-4">
+				{data?.length > 0 && <div className="flex justify-center w-full sm:p-4">
 					<div className='grid grid-cols-5 bg-transparent backdrop-blur-sm text-gray-50 rounded-md py-4 w-full border-2 border-gray-400'>
 						<div className='grid grid-cols-5 col-span-5 border-b-2 mb-2 border-gray-400'>
 							<div className='col-span-3 pb-4 px-2 text-gray-300'>Long URL</div>
@@ -112,7 +112,7 @@ const Main = ({ urlList }) => {
 							))}
 						</div>
 					</div>
-				</div>
+				</div>}
 			</main>
 		</div>
 	);
