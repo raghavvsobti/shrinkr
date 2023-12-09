@@ -3,6 +3,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import "../styles/Home.module.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import CopyUrl from "../components/CopyUrl"
 
 export default function Home({ urlList }) {
   const [data, setData] = useState(urlList);
@@ -27,17 +28,6 @@ export default function Home({ urlList }) {
       setData([content, ...data]);
     }
   };
-
-  const [isCopied, setIsCopied] = useState(false)
-
-  useEffect(() => {
-    if (isCopied) {
-      setTimeout(() => {
-        setIsCopied(false)
-      }, 3000);
-    }
-  }, [isCopied])
-
 
   return (
     <>
@@ -85,15 +75,7 @@ export default function Home({ urlList }) {
                         <a target="_blank" href={`/api/${urlObject.code}`}>
                           {urlObject.code}
                         </a>
-                        <section
-                          style={{ cursor: 'pointer', color: "aqua" }}
-                          onClick={() => {
-                            navigator.clipboard.writeText(process.env.BASE_URL + `${urlObject.code}`);
-                            setIsCopied(true);
-                          }}
-                        >
-                          {isCopied ? "Copied!" : "Copy!"}
-                        </section>
+                        <CopyUrl urlObject={urlObject} />
 
                       </td>
                       <td>{urlObject.clicked}</td>
