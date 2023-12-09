@@ -1,7 +1,7 @@
 # url-shortener
 This is a url shortener app built with nextjs and mongodb
 
-[https://url-shortener-nextjs-ivory.vercel.app/]
+https://url-shortener-nextjs-ivory.vercel.app/
 
 A [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
