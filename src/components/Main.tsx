@@ -5,11 +5,12 @@ import "../styles/Home.module.css";
 import CopyUrl from "../components/CopyUrl";
 import Image from "next/image";
 import "../styles/Home.module.css";
+import { useRouter } from 'next/router';
 
 const Main = ({ urlList }) => {
 	const [data, setData] = useState(urlList);
 	const [newUrl, setNewUrl] = useState("");
-
+	const router = useRouter()
 	//on submit form call post API
 	const handleOnSubmit = async (e) => {
 		e.preventDefault();
@@ -101,7 +102,9 @@ const Main = ({ urlList }) => {
 											</a>
 										</div>
 										<div className='truncate'>
-											<a target="_blank" href={`/api/${urlObject.code}`}>
+											<a target="_blank" href={`/api/${urlObject.code}`} onClick={() => setTimeout(() => {
+												router.reload()
+											}, 100)}>
 												{urlObject.code}
 											</a>
 											<CopyUrl urlObject={urlObject} />
@@ -116,8 +119,8 @@ const Main = ({ urlList }) => {
 				<footer className="text-gray-400 fixed bottom-10 sm:right-10 pr-4 mt-2 font-light">
 					Developed by Raghav Sobti
 				</footer>
-			</main>
-		</div>
+			</main >
+		</div >
 	);
 };
 
