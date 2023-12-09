@@ -113,6 +113,9 @@ const Main = ({ urlList }) => {
 						</div>
 					</div>
 				</div>}
+				<footer className="text-gray-400 fixed bottom-10 sm:right-10 pr-4 mt-2 font-light">
+					Developed by Raghav Sobti
+				</footer>
 			</main>
 		</div>
 	);
