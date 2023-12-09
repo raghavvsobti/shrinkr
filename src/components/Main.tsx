@@ -67,19 +67,18 @@ const Main = ({ urlList }) => {
 						]}
 						speed={50}
 						repeat={Infinity}
-						className='font-semibold text-6xl text-white'
+						className='font-semibold text-2xl sm:text-6xl text-white'
 					/>
-					{/* <h2 className={`mb-3 text-6xl font-bold text-gray-100 ${animate && "animate-pulse"}`}>Shrinkr.</h2> */}
 				</div>
-				<form className="mb-3 w-full justify-center p-10" onSubmit={handleOnSubmit}>
+				<form className="mb-3 w-full justify-center p-4 sm:p-10" onSubmit={handleOnSubmit}>
 					<input
 						type="text"
-						className="w-[40rem] py-3 rounded-l-full px-2"
+						className="w-[40rem] py-3 rounded-l-xl sm:rounded-l-full px-2"
 						placeholder="Enter long url..."
 						value={newUrl}
 						onChange={(e) => setNewUrl(e.target.value)}
 					/>
-					<button type="submit" className="animate-pulse bg-gray-200 px-6 py-3 rounded-r-full font-semibold text-gray-700 mr-2">
+					<button type="submit" className="animate-pulse bg-gray-200 px-6 py-3 rounded-r-xl sm:rounded-r-full font-semibold text-gray-700 mr-2">
 						Shrink URL
 					</button>
 				</form>
@@ -101,7 +100,7 @@ const Main = ({ urlList }) => {
 												{urlObject.url.length > 120 ? "..." : ""}
 											</a>
 										</div>
-										<div>
+										<div className='truncate'>
 											<a target="_blank" href={`/api/${urlObject.code}`}>
 												{urlObject.code}
 											</a>
