@@ -3,7 +3,6 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import "../styles/Home.module.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import MyToast from "../components/MyToast"
 
 export default function Home({ urlList }) {
   const [data, setData] = useState(urlList);
