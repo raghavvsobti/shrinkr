@@ -41,7 +41,7 @@ const Main = ({ urlList }) => {
 
 
 	return (
-		<div className="h-screen w-full">
+		<div className="h-screen w-full overflow-y-clip">
 			<Head>
 				<title>Shrinkr.</title>
 			</Head>
