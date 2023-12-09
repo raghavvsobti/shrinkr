@@ -1,5 +1,5 @@
 # url-shortener
-This is a url shortener app built with nextjs, bootstrap, tailwindcss and mongodb
+This is a url shortener app built with nextjs, tailwindcss and mongodb
 
 https://url-shortener-nextjs-ivory.vercel.app/
 
