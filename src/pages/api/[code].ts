@@ -6,7 +6,6 @@ export default async function handler(req: any, res: any) {
 		const { code } = req.query;
 		await connectMongo();
 		const data = await Urls.findOne({ code });
-		console.log(data);
 		if (data) {
 			data.clicked += 1;
 			data.save();
