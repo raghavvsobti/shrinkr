@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import { useSession } from "next-auth/react";
+import React from "react";
 import Main from "../components/Main";
 import "../styles/Home.module.css";
 
 export default function Home({ urlList }) {
-  return <Main urlList={urlList} />;
+  const { data } = useSession();
+  return <Main urlList={urlList} sessionData={data} />;
 }
 
 export async function getServerSideProps(context) {
