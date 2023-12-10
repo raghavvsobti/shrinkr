@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { TypeAnimation } from 'react-type-animation';
 import Head from "next/head";
 import React, { useEffect, useState } from "react";
@@ -10,8 +11,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRightFromBracket, } from '@fortawesome/free-solid-svg-icons'
 import { signOut, signIn } from "next-auth/react"
 
-const Main = ({ urlList, sessionData }) => {
-	const [data, setData] = useState(urlList);
+const Main = ({ urlList, sessionData, randomEmail }) => {
+	const [data, setData] = useState(urlList || []);
 	const [newUrl, setNewUrl] = useState("");
 	const router = useRouter()
 	//on submit form call post API
@@ -24,14 +25,12 @@ const Main = ({ urlList, sessionData }) => {
 			headers: {
 				"content-type": "application/json",
 			},
-			body: JSON.stringify({ url: _newUrl }),
+			body: JSON.stringify({ url: _newUrl, email: sessionData?.user?.email || randomEmail }),
 		});
-
 		const content = await response.json();
-		if (content) {
-			//add new url above all previous urls
-			setData([content, ...data]);
-		}
+
+		//add new url above all previous urls
+		setData([content, ...data]);
 	};
 
 	const [animate, setAnimate] = useState(true);
@@ -41,7 +40,6 @@ const Main = ({ urlList, sessionData }) => {
 			setAnimate(false)
 		}, 6000);
 	}, [])
-
 
 	return (
 		<div className="h-screen w-full overflow-y-clip">
@@ -61,13 +59,21 @@ const Main = ({ urlList, sessionData }) => {
 			<main className="relative w-full p-10 z-10">
 				<div className="flex justify-end">
 					{sessionData ?
-						<div className="bg-gray-700 w-fit flex items-center space-x-2 rounded-full pr-3">
-							<span className="bg-gray-200 rounded-l-full w-fit h-full px-2 pl-4 py-2">
-								<FontAwesomeIcon icon={faArrowRightFromBracket} className='w-4 cursor-pointer text-red-700 h-4'
-									onClick={() => signOut()}
+						<div className="bg-gray-700 w-fit flex items-center space-x-2 rounded-full">
+							<img
+								className="rounded-full ml-1"
+								src={sessionData?.user?.image}
+								height={35}
+								width={35}
+								alt="avatar"
+							/>
+							<p className='text-gray-100 text-end'>{sessionData?.user?.name}</p>
+							<span className="cursor-pointer bg-gray-200 rounded-r-full w-fit h-full px-1 flex items-center"
+								onClick={() => signOut()}
+							>
+								<FontAwesomeIcon icon={faArrowRightFromBracket} className='w-6 cursor-pointer text-red-700 h-6'
 								/>
 							</span>
-							<p className='text-gray-100 text-end'>{sessionData?.user?.name}</p>
 						</div> :
 						<div className="cursor-pointer bg-gray-700 w-fit flex items-center space-x-2 rounded-full pr-3"
 							onClick={() => signIn("google")}
@@ -106,44 +112,46 @@ const Main = ({ urlList, sessionData }) => {
 						value={newUrl}
 						onChange={(e) => setNewUrl(e.target.value)}
 					/>
-					<button type="submit" className={`${animate && "animate-pulse"} bg-gray-200 px-6 py-3 rounded-r-xl sm:rounded-r-full font-semibold text-gray-700 mr-2`}>
+					<button
+						onClick={handleOnSubmit}
+						type="submit" disabled={newUrl?.trim()?.length === 0}
+						className={`${animate && "animate-pulse"} bg-gray-200 px-6 py-3 rounded-r-xl sm:rounded-r-full font-semibold text-gray-700 mr-2`}>
 						Shrink URL
 					</button>
 				</form>
 
-				{
-					data?.length > 0 && <div className="flex justify-center w-full sm:p-4">
-						<div className='grid grid-cols-5 bg-transparent backdrop-blur-sm text-gray-50 rounded-md py-4 w-full border-2 border-gray-400'>
-							<div className='grid grid-cols-5 col-span-5 border-b-2 mb-2 border-gray-400'>
-								<div className='col-span-3 pb-4 px-2 text-gray-300'>Long URL</div>
-								<div className='pb-4 text-gray-300'>Short URL</div>
-								<div className='pb-4 text-gray-300'>Clicked</div>
-							</div>
-							<div className='col-span-5 max-h-[calc(100vh-28rem)] py-0 my-0 overflow-y-auto'>
-								{data.map((urlObject) => (
-									<React.Fragment key={urlObject.code}>
-										<div className='col-span-5 grid grid-cols-5 mb-2'>
-											<div className='col-span-3 px-2 truncate'>
-												<a href={urlObject.url}>
-													{urlObject.url.slice(0, 120)}
-													{urlObject.url.length > 120 ? "..." : ""}
-												</a>
-											</div>
-											<div className='truncate'>
-												<a target="_blank" href={`/api/${urlObject.code}`} onClick={() => setTimeout(() => {
-													router.reload()
-												}, 100)}>
-													{urlObject.code}
-												</a>
-												<CopyUrl urlObject={urlObject} />
-											</div>
-											<div>{urlObject.clicked}</div>
+				{data?.length > 0 && <div className="flex justify-center w-full sm:p-4">
+					<div className='grid grid-cols-5 bg-transparent backdrop-blur-sm text-gray-50 rounded-md py-4 w-full border-2 border-gray-400'>
+						<div className='grid grid-cols-5 col-span-5 border-b-2 mb-2 border-gray-400'>
+							<div className='col-span-3 pb-4 px-2 text-gray-300'>Long URL</div>
+							<div className='pb-4 text-gray-300'>Short URL</div>
+							<div className='pb-4 text-gray-300'>Clicked</div>
+						</div>
+						<div className='col-span-5 max-h-[calc(100vh-28rem)] py-0 my-0 overflow-y-auto'>
+							{data?.map((urlObject) => (
+								<React.Fragment key={urlObject.code || Math.floor(Math.random() * 100000)}>
+									<div className='col-span-5 grid grid-cols-5 mb-2'>
+										<div className='col-span-3 px-2 truncate'>
+											<a href={urlObject.url}>
+												{urlObject.url?.slice(0, 120)}
+												{urlObject.url?.length > 120 ? "..." : ""}
+											</a>
 										</div>
-									</React.Fragment>
-								))}
-							</div>
+										<div className='truncate'>
+											<a target="_blank" href={`/api/${urlObject.code}`} onClick={() => setTimeout(() => {
+												router.reload()
+											}, 100)}>
+												{urlObject.code}
+											</a>
+											<CopyUrl urlObject={urlObject} />
+										</div>
+										<div>{urlObject.clicked}</div>
+									</div>
+								</React.Fragment>
+							))}
 						</div>
 					</div>
+				</div>
 				}
 				<footer className="text-gray-400 fixed bottom-10 sm:right-10 pr-4 mt-2 font-light">
 					Developed by Raghav Sobti

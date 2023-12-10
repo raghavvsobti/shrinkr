@@ -9,6 +9,7 @@ const UrlSchema = new Schema({
 	},
 	url: { type: String, require: true },
 	clicked: { type: Number, default: 0 },
+	email: { type: String, require: true }
 });
 
 const Urls = models.Urls || model("Urls", UrlSchema);
