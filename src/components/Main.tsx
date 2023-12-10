@@ -126,24 +126,24 @@ const Main = ({ urlList, sessionData, randomEmail }) => {
 				</form>
 
 				{data?.length > 0 && <div className="flex justify-center w-full sm:p-4">
-					<div className='grid grid-cols-5 bg-transparent backdrop-blur-sm text-gray-50 rounded-md py-4 w-full border-2 border-gray-400'>
-						<div className='grid grid-cols-5 col-span-5 border-b-2 mb-2 border-gray-400'>
+					<div className='grid grid-cols-6 sm:grid-cols-5 bg-transparent backdrop-blur-sm text-gray-50 rounded-md py-4 w-full border-2 border-gray-400'>
+						<div className='grid grid-cols-6 sm:grid-cols-5 sm:col-span-5 col-span-6 border-b-2 mb-2 border-gray-400'>
 							<div className='col-span-3 pb-4 px-2 text-gray-300'>Long URL</div>
-							<div className='pb-4 text-gray-300'>Short URL</div>
-							<div className='pb-4 text-gray-300'>Visited</div>
+							<div className='pb-4 sm:col-span-1 col-span-2 text-gray-300'>Short URL</div>
+							<div className='pb-4 text-gray-300 truncate'>Visited</div>
 						</div>
-						<div className='col-span-5 max-h-[calc(100vh-28rem)] py-0 my-0 overflow-y-auto'>
+						<div className='sm:col-span-5 col-span-6 max-h-[calc(100vh-28rem)] py-0 my-0 overflow-y-auto'>
 							{data?.map((urlObject) => (
 								<React.Fragment key={urlObject.code || Math.floor(Math.random() * 100000)}>
-									<div className='col-span-5 grid grid-cols-5 mb-2'>
+									<div className='sm:col-span-5 col-span-6 grid grid-cols-6 sm:grid-cols-5 mb-2'>
 										<div className='col-span-3 px-2 truncate'>
 											<a href={urlObject.url}>
 												{urlObject.url?.slice(0, 120)}
 												{urlObject.url?.length > 120 ? "..." : ""}
 											</a>
 										</div>
-										<div className='truncate flex'>
-											<a className='mr-1 w-24' target="_blank" href={`/api/${urlObject.code}`} onClick={() => setTimeout(() => {
+										<div className='truncate sm:col-span-1 col-span-2'>
+											<a target="_blank" href={`/api/${urlObject.code}`} onClick={() => setTimeout(() => {
 												router.reload()
 											}, 100)}>
 												{urlObject.code}
