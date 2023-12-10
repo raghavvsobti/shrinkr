@@ -33,6 +33,11 @@ const Main = ({ urlList, sessionData, randomEmail }) => {
 		setData([content, ...data]);
 	};
 
+	useEffect(() => {
+		setData(urlList)
+	}, [urlList])
+
+
 	const [animate, setAnimate] = useState(true);
 
 	useEffect(() => {
@@ -57,17 +62,17 @@ const Main = ({ urlList, sessionData, randomEmail }) => {
 				alt="bg"
 			/>
 			<main className="relative w-full p-10 z-10">
-				<div className="flex justify-end">
+				<div className="flex justify-center mb-4 sm:mb-0 sm:justify-end">
 					{sessionData ?
-						<div className="bg-gray-700 w-fit flex items-center space-x-2 rounded-full">
+						<div className="bg-gray-700 w-fit flex items-center rounded-full">
 							<img
-								className="rounded-full ml-1"
+								className="rounded-full mr-1 border-2 border-fuchsia-100 drop-shadow-xl"
 								src={sessionData?.user?.image}
 								height={35}
 								width={35}
 								alt="avatar"
 							/>
-							<p className='text-gray-100 text-end'>{sessionData?.user?.name}</p>
+							<p className='max-w-28 pr-2 font-bold text-gray-100 text-center'>{sessionData?.user?.name}</p>
 							<span className="cursor-pointer bg-gray-200 rounded-r-full w-fit h-full px-1 flex items-center"
 								onClick={() => signOut()}
 							>
@@ -125,7 +130,7 @@ const Main = ({ urlList, sessionData, randomEmail }) => {
 						<div className='grid grid-cols-5 col-span-5 border-b-2 mb-2 border-gray-400'>
 							<div className='col-span-3 pb-4 px-2 text-gray-300'>Long URL</div>
 							<div className='pb-4 text-gray-300'>Short URL</div>
-							<div className='pb-4 text-gray-300'>Clicked</div>
+							<div className='pb-4 text-gray-300'>Visited</div>
 						</div>
 						<div className='col-span-5 max-h-[calc(100vh-28rem)] py-0 my-0 overflow-y-auto'>
 							{data?.map((urlObject) => (
@@ -137,8 +142,8 @@ const Main = ({ urlList, sessionData, randomEmail }) => {
 												{urlObject.url?.length > 120 ? "..." : ""}
 											</a>
 										</div>
-										<div className='truncate'>
-											<a target="_blank" href={`/api/${urlObject.code}`} onClick={() => setTimeout(() => {
+										<div className='truncate flex'>
+											<a className='mr-1 w-24' target="_blank" href={`/api/${urlObject.code}`} onClick={() => setTimeout(() => {
 												router.reload()
 											}, 100)}>
 												{urlObject.code}

@@ -3,47 +3,50 @@ import React, { useEffect, useState } from "react";
 import Main from "../components/Main";
 import "../styles/Home.module.css";
 import { getSession } from "next-auth/react"
-// import { cookies } from 'next/headers'
 
-export default function Home({ urlList }) {
+export default function Home() {
   const [randomEmail, setRandomEmail] = useState("")
-  // const cookieStore = cookies()
-  const { data } = useSession();
-  // useEffect(() => {
-  //   if (!data && !cookieStore.get("randomEmail")) {
-  //     const random = Math.floor(Math.random() * 1000) + "@skrinkr";
-  //     setRandomEmail(random)
-  //     cookieStore.set("randomEmail", random)
-  //   }
+  const [urlList, setUrlList] = useState([]);
 
-  // }, [JSON.stringify(data)])
+  const { data } = useSession();
+
+  useEffect(() => {
+    (async () => {
+      if (data?.user?.email) {
+        const res = await fetch("api/url/" + data?.user?.email);
+        if (res) {
+          let data = await res.json();
+          setUrlList(data)
+          localStorage.removeItem("randomEmail")
+        }
+
+        return;
+      } else if (localStorage.getItem("randomEmail")) {
+        setRandomEmail(localStorage.getItem("randomEmail") || "")
+
+        const res = await fetch("api/url/" + localStorage.getItem("randomEmail"));
+        if (res) {
+          let data = await res.json();
+          setUrlList(data)
+        }
+
+        return;
+      } else {
+        const random = Math.floor(Math.random() * 10000000000) + "@skrinkr";
+        localStorage.setItem("randomEmail", random)
+        setRandomEmail(random)
+
+        const res = await fetch("api/url/" + random);
+        if (res) {
+          let data = await res.json() || [];
+          setUrlList(data)
+        }
+
+        return;
+      }
+    })()
+
+  }, [JSON.stringify(data)])
 
   return <Main urlList={urlList} sessionData={data} randomEmail={randomEmail} />;
-}
-
-export async function getServerSideProps(context) {
-  const session = await getSession(context);
-  // const cookieStore = cookies()
-  // let randomEmail;
-  // if (typeof window !== undefined) {
-  //   randomEmail = cookieStore.get("randomEmail");
-  // }
-  //call api on load
-  let res;
-  let urlList;
-  if (session?.user
-    // || randomEmail
-  ) {
-    res = await fetch(process.env.BASE_URL + "url" + "/" + (session?.user?.email
-      // || randomEmail
-    ));
-    urlList = await res.json()
-  } else {
-    urlList = [];
-  }
-  return {
-    props: {
-      urlList,
-    },
-  };
 }
